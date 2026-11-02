@@ -6,142 +6,82 @@
   <title>Sign in | Lumora</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --ink: #0d2427;
       --deep: #08393a;
       --teal: #12a594;
-      --teal-2: #0e8c7e;
       --lime: #7ee8b0;
-      --mint: #b8f0e0;
       --sun: #ffb84d;
       --coral: #ff7a59;
-      --paper: #eef6f4;
       --line: #d9e6e3;
       --bs-body-font-family: "DM Sans", system-ui, sans-serif;
     }
     * { -webkit-font-smoothing: antialiased; }
-    body { background: var(--paper); color: var(--ink); min-height: 100vh; }
-    h1, h2, h3, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; letter-spacing: -.025em; }
+    html, body { min-height: 100%; }
+    body {
+      color: var(--ink); min-height: 100vh; position: relative; overflow-x: hidden;
+      background:
+        radial-gradient(800px 500px at 15% 10%, rgba(18,165,148,.35), transparent 60%),
+        radial-gradient(700px 500px at 90% 90%, rgba(255,184,77,.30), transparent 60%),
+        radial-gradient(600px 400px at 85% 5%, rgba(126,232,176,.30), transparent 60%),
+        #eaf5f2;
+    }
+    /* soft dotted grid */
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .6;
+      background-image: radial-gradient(rgba(8,57,58,.16) 1px, transparent 1px); background-size: 26px 26px;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 75%);
+              mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 75%);
+    }
+    h1, .brand { font-family: "Bricolage Grotesque", "DM Sans", sans-serif; letter-spacing: -.025em; }
     a { color: #0b7f72; text-decoration: none; font-weight: 500; }
     a:hover { color: var(--deep); text-decoration: underline; }
 
-    /* ================= LEFT PANEL ================= */
-    .brand-panel {
-      position: relative; overflow: hidden; color: #fff; min-height: 100vh;
-      background:
-        radial-gradient(900px 500px at 100% 0%, rgba(18,165,148,.65), transparent 60%),
-        radial-gradient(700px 500px at 0% 100%, rgba(126,232,176,.22), transparent 60%),
-        linear-gradient(165deg, #0a4a49 0%, #062a2c 100%);
-    }
-    /* soft dotted grid */
-    .brand-panel::before {
-      content: ""; position: absolute; inset: 0; opacity: .5;
-      background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1px);
-      background-size: 26px 26px;
-      -webkit-mask-image: radial-gradient(circle at 60% 40%, #000 0%, transparent 70%);
-              mask-image: radial-gradient(circle at 60% 40%, #000 0%, transparent 70%);
-    }
-    .ring {
-      position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,.12); pointer-events: none;
-    }
-    .ring.r1 { width: 640px; height: 640px; right: -260px; top: 80px; }
-    .ring.r2 { width: 440px; height: 440px; right: -160px; top: 180px; border-color: rgba(255,255,255,.2); }
-    .brand-inner { position: relative; z-index: 2; height: 100%; min-height: 100vh; }
+    .page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2.5rem 1rem; position: relative; z-index: 1; }
 
-    .logo-mark {
-      width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--sun), var(--coral)); color: #fff;
-      box-shadow: 0 8px 20px rgba(255,122,89,.35);
-    }
-    .brand-panel h2 { font-size: clamp(2.2rem, 3.4vw, 3.3rem); font-weight: 800; line-height: 1.05; max-width: 13ch; }
-    .brand-panel h2 em {
-      font-style: normal;
-      background: linear-gradient(90deg, var(--lime), var(--sun)); -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .lead-sm { color: rgba(255,255,255,.75); max-width: 40ch; }
-
-    /* floating dashboard preview */
-    .preview-stage { position: relative; height: 270px; max-width: 470px; }
-    .glass {
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-      border-radius: 20px; box-shadow: 0 24px 50px rgba(0,0,0,.25);
-    }
-    .card-main { position: absolute; left: 0; top: 10px; width: 300px; padding: 20px; animation: floaty 7s ease-in-out infinite; }
-    .card-main .label { font-size: .8rem; color: rgba(255,255,255,.7); }
-    .card-main .big { font-family: "Bricolage Grotesque"; font-size: 2rem; font-weight: 800; line-height: 1.1; }
-    .badge-up { background: rgba(126,232,176,.2); color: var(--lime); border-radius: 999px; padding: 3px 10px; font-size: .75rem; font-weight: 600; }
-    .bars { display: flex; align-items: flex-end; gap: 8px; height: 84px; margin-top: 14px; }
-    .bars span { flex: 1; border-radius: 7px 7px 3px 3px; background: linear-gradient(180deg, var(--lime), rgba(18,165,148,.5)); }
-    .card-side {
-      position: absolute; right: 0; top: 118px; width: 215px; padding: 16px;
-      animation: floaty 7s ease-in-out -3s infinite;
-    }
-    .ring-chart { width: 54px; height: 54px; flex: none; }
-    .card-chip {
-      position: absolute; right: 36px; top: 0; padding: 9px 14px; border-radius: 14px; font-size: .82rem; font-weight: 600;
-      background: #fff; color: var(--ink); box-shadow: 0 14px 30px rgba(0,0,0,.25);
-      display: flex; align-items: center; gap: 8px; animation: floaty 6s ease-in-out -1.5s infinite;
-    }
-    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px rgba(18,165,148,.2); }
-    @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
-
-    .quote { max-width: 440px; }
-    .quote p { color: rgba(255,255,255,.92); }
-    .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: .8rem;
-      background: linear-gradient(135deg, var(--mint), var(--lime)); color: var(--ink); }
-    .stars { color: var(--sun); letter-spacing: 2px; }
-
-    /* ================= RIGHT SIDE ================= */
-    .form-side { position: relative; overflow: hidden; }
-    .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; pointer-events: none; }
-    .blob.b1 { width: 340px; height: 340px; background: #9be7d3; top: -90px; right: -80px; }
-    .blob.b2 { width: 300px; height: 300px; background: #ffe1b3; bottom: -90px; left: -70px; }
-
-    .form-card {
-      position: relative; z-index: 2; width: 100%; max-width: 450px;
-      background: rgba(255,255,255,.92); border: 1px solid rgba(255,255,255,.9);
-      border-radius: 28px; padding: 2.6rem 2.4rem;
-      box-shadow: 0 30px 70px -20px rgba(8,57,58,.28), 0 2px 6px rgba(8,57,58,.06);
+    .login-card {
+      width: 100%; max-width: 440px; background: rgba(255,255,255,.95);
+      border: 1px solid #fff; border-radius: 28px; padding: 2.5rem 2.3rem;
+      box-shadow: 0 35px 80px -25px rgba(8,57,58,.35), 0 2px 6px rgba(8,57,58,.06);
       animation: rise .7s cubic-bezier(.2,.8,.2,1) both;
     }
     @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-    .form-card h1 { font-size: 2.1rem; font-weight: 800; }
+
+    .logo-mark {
+      width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; color: #fff;
+      background: linear-gradient(135deg, var(--sun), var(--coral)); box-shadow: 0 12px 24px rgba(255,122,89,.35);
+    }
+    .login-card h1 { font-size: 1.95rem; font-weight: 800; }
     .wave { display: inline-block; transform-origin: 70% 70%; animation: wave 2.4s .6s 1; }
     @keyframes wave { 0%,100% { transform: rotate(0); } 15% { transform: rotate(14deg); } 30% { transform: rotate(-8deg); } 45% { transform: rotate(14deg); } 60% { transform: rotate(-4deg); } 75% { transform: rotate(10deg); } }
 
-    .form-control {
-      border-radius: 14px; border: 1.5px solid var(--line); background: #f8fbfa; padding: .95rem .9rem; transition: all .2s;
-    }
+    .form-control { border-radius: 14px; border: 1.5px solid var(--line); background: #f8fbfa; padding: .95rem .9rem; transition: all .2s; }
     .form-floating > .form-control { padding-top: 1.7rem; height: 3.75rem; }
     .form-control:hover { border-color: #b7d3ce; }
     .form-control:focus { border-color: var(--teal); background: #fff; box-shadow: 0 0 0 .28rem rgba(18,165,148,.16); }
     .form-floating > label { color: #6c8588; }
     .field-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #7a9094; z-index: 5; pointer-events: none; display: flex; transition: color .2s; }
-    .has-icon .form-control { padding-left: 2.9rem; }
+    .has-icon .form-control { padding-left: 2.9rem; background-image: none !important; }
     .has-icon > label { padding-left: 2.9rem; }
     .has-icon:focus-within .field-icon { color: var(--teal); }
     .toggle-pass { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); z-index: 5; border: 0; background: transparent; color: #5b7377; width: 42px; height: 42px; border-radius: 10px; }
     .toggle-pass:hover { background: #e8f2f0; color: var(--ink); }
-    .has-icon .form-control.is-invalid, .has-icon .form-control.is-valid { background-image: none; }
 
     .btn-signin {
-      position: relative; overflow: hidden; border: 0; border-radius: 14px; color: #fff; font-weight: 600; font-size: 1.05rem;
-      padding: 1rem; background: linear-gradient(135deg, #14b8a3 0%, #0b7f72 100%);
-      box-shadow: 0 14px 28px -10px rgba(14,140,126,.65); transition: transform .15s, box-shadow .2s;
+      position: relative; overflow: hidden; border: 0; border-radius: 14px; color: #fff; font-weight: 600; font-size: 1.05rem; padding: 1rem;
+      background: linear-gradient(135deg, #14b8a3 0%, #0b7f72 100%); box-shadow: 0 14px 28px -10px rgba(14,140,126,.65);
+      transition: transform .15s, box-shadow .2s;
     }
-    .btn-signin::after {
-      content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
-      background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); transition: left .6s;
-    }
+    .btn-signin::after { content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); transition: left .6s; }
     .btn-signin:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 18px 32px -10px rgba(14,140,126,.75); }
     .btn-signin:hover::after { left: 140%; }
     .btn-signin:active { transform: translateY(0); }
     .btn-signin .arrow { transition: transform .2s; }
     .btn-signin:hover .arrow { transform: translateX(4px); }
+    .btn-signin:disabled { opacity: .85; color: #fff; }
 
     .btn-social { border: 1.5px solid var(--line); background: #fff; border-radius: 14px; padding: .8rem 1rem; font-weight: 500; color: var(--ink); transition: all .2s; }
     .btn-social:hover { border-color: var(--teal); background: #f1fbf9; color: var(--ink); transform: translateY(-1px); box-shadow: 0 8px 18px -10px rgba(18,165,148,.5); }
@@ -151,357 +91,135 @@
     .form-check-input:checked { background-color: var(--teal); border-color: var(--teal); }
     .form-check-input:focus { box-shadow: 0 0 0 .25rem rgba(18,165,148,.18); border-color: var(--teal); }
     .alert-soft { border-radius: 14px; background: #fff3f1; border: 1px solid #ffd2cb; color: #9c2c1c; font-size: .93rem; }
-    .secure { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; color: #5f7a7d; background: #eaf5f2; border-radius: 999px; padding: .3rem .7rem; }
+    .secure { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; color: #5f7a7d; }
     .spinner-border-sm { --bs-spinner-width: 1rem; --bs-spinner-height: 1rem; }
 
-    /* segmented switch */
-    .seg { display: grid; grid-template-columns: 1fr 1fr; position: relative; background: #e6f1ee; border-radius: 14px; padding: 4px; margin-bottom: 1.75rem; }
-    .seg button { position: relative; z-index: 1; border: 0; background: transparent; padding: .6rem; border-radius: 11px; font-weight: 600; color: #5b7377; transition: color .25s; }
-    .seg button.active { color: var(--ink); }
-    .seg .pill { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); background: #fff; border-radius: 11px; box-shadow: 0 4px 12px rgba(8,57,58,.12); transition: transform .3s cubic-bezier(.2,.8,.2,1); }
-    .seg.right .pill { transform: translateX(100%); }
-    .view-in { animation: rise .45s cubic-bezier(.2,.8,.2,1) both; }
-    /* password strength */
-    .meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: .55rem; }
-    .meter i { height: 5px; border-radius: 4px; background: #dfe9e7; transition: background .25s; }
-    .meter.s1 i:nth-child(-n+1) { background: #ef5b45; }
-    .meter.s2 i:nth-child(-n+2) { background: #ffb84d; }
-    .meter.s3 i:nth-child(-n+3) { background: #7cc96b; }
-    .meter.s4 i:nth-child(-n+4) { background: var(--teal); }
-    .meter-label { font-size: .8rem; color: #5f7a7d; min-height: 1.1rem; }
-    .form-check-input.is-invalid ~ .form-check-label { color: #b3261e; }
-    @media (max-width: 575.98px) { .form-card { padding: 2rem 1.35rem; border-radius: 22px; } }
+    @media (max-width: 575.98px) { .login-card { padding: 2rem 1.35rem; border-radius: 22px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
-<main class="container-fluid p-0">
-  <div class="row g-0">
+<main class="page">
+  <div class="login-card">
 
-    <!-- ============ LEFT: brand + preview ============ -->
-  <aside class="col-lg-6 d-none d-lg-block ">
-      <div class=" r1"></div><div class="r2"></div>
-      <div class=" d-flex flex-column justify-content-between p-5">
+    <div class="text-center mb-4">
+      <a href="/" class="d-inline-flex flex-column align-items-center gap-2 text-decoration-none" style="color:var(--ink)">
+        <span class="logo-mark"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2 4 13.5h6.5L9.5 22 20 9.5h-6.8z"/></svg></span>
+        <span class="brand fs-4 fw-bold">Lumora</span>
+      </a>
+    </div>
 
-        <!--   <a href="/" class="d-flex align-items-center gap-2 text-white text-decoration-none">
-          <span class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2 4 13.5h6.5L9.5 22 20 9.5h-6.8z"/></svg></span>
-          <span class="brand fs-4 fw-bold">Lumora</span>
-        </a>
+    <h1 class="text-center mb-2">Welcome back <span class="wave" aria-hidden="true">👋</span></h1>
+    <p class="text-secondary text-center mb-4">Sign in to your account to continue.</p>
 
-        <div>
-          <h2 class="mb-3" id="leftTitle">Run your work <em>faster</em>, together.</h2>
-          <p class="lead-sm fs-5 mb-4" id="leftText">Projects, people and reports, all in one calm workspace.</p>
+    <div id="formError" class="alert-soft p-3 mb-3 d-none" role="alert">
+      <svg class="me-1" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>
+      Email or password is incorrect. Try again or reset your password.
+    </div>
 
-          <!-- floating product preview -->
-          <!-- <div class="preview-stage">
-            <div class="card-chip"><span class="dot"></span>3 teammates online</div>
-
-            <div class="glass card-main">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="label">Tasks completed this week</div>
-                  <div class="big">1,284</div>
-                </div>
-                <span class="badge-up">▲ 18.2%</span>
-              </div>
-              <div class="bars" aria-hidden="true">
-                <span style="height:38%"></span><span style="height:55%"></span><span style="height:44%"></span>
-                <span style="height:72%"></span><span style="height:60%"></span><span style="height:88%"></span><span style="height:100%"></span>
-              </div>
-            </div>
-
-            <div class="glass card-side d-flex align-items-center gap-3">
-              <svg class="ring-chart" viewBox="0 0 36 36" aria-hidden="true">
-                <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4"/>
-                <circle cx="18" cy="18" r="15.5" fill="none" stroke="#7ee8b0" stroke-width="4" stroke-linecap="round" stroke-dasharray="78 100" transform="rotate(-90 18 18)" pathLength="100"/>
-                <text x="18" y="21.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">78%</text>
-              </svg>
-              <div>
-                <div class="fw-semibold">Sprint goal</div>
-                <small class="text-white-50">On track for Friday</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="quote">
-          <div class="stars mb-2" aria-label="5 out of 5 stars">★★★★★</div>
-          <p class="mb-3">“We cut our weekly reporting from a day to twenty minutes. I open Lumora first thing every morning.”</p>
-          <div class="d-flex align-items-center gap-3">
-            <div class="avatar">PD</div>
-            <div>
-              <div class="fw-semibold">Priya Deshmukh</div>
-              <small class="text-white-50">Operations Lead, Kestrel Foods</small>
-            </div>
-          </div>
-        </div>
-      </div> -->
-  </aside>
-    <!-- ============ RIGHT: form ============ -->
-    <section class="col-lg-6 form-side d-flex align-items-center justify-content-center px-3 px-sm-4 py-5 min-vh-100">
-      <div class="blob b1"></div><div class="blob b2"></div>
-
-      <div class="form-card">
-        <a href="/" class="d-flex d-lg-none align-items-center gap-2 text-decoration-none mb-4" style="color:var(--ink)">
-          <span class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 2 4 13.5h6.5L9.5 22 20 9.5h-6.8z"/></svg></span>
-          <span class="brand fs-4 fw-bold">Lumora</span>
-        </a>
-
-        <div class="seg" id="seg" role="tablist">
-          <span class="pill"></span>
-          <button type="button" class="active" id="tabIn" data-go="signin" role="tab">Sign in</button>
-          <button type="button" id="tabUp" data-go="signup" role="tab">Sign up</button>
-        </div>
-
-        <div id="loginView" class="view-in">
-        <h1 class="mb-2">Welcome back <span class="wave" aria-hidden="true">👋</span></h1>
-        <p class="text-secondary mb-4">Sign in to your account to continue.</p>
-
-        <div id="formError" class="alert-soft p-3 mb-3 d-none" role="alert">
-          <svg class="me-1" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>
-          Email or password is incorrect. Try again or reset your password.
-        </div>
-
-        <form id="loginForm" novalidate>
-          <div class="form-floating has-icon mb-3 position-relative">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5 12 13l8.5-5.5"/></svg></span>
-            <input type="email" class="form-control" id="email" placeholder="you@company.com" autocomplete="email" required>
-            <label for="email">Email address</label>
-            <div class="invalid-feedback">Enter a valid email address.</div>
-          </div>
-
-          <div class="form-floating has-icon mb-3 position-relative">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/></svg></span>
-            <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="current-password" minlength="8" required>
-            <label for="password">Password</label>
-            <button type="button" class="toggle-pass" data-target="password" aria-label="Show password">
-              <svg class="eye-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
-              <svg class="eye-off d-none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.3 6.4C3.7 8.1 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
-            </button>
-            <div class="invalid-feedback">Password must be at least 8 characters.</div>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="form-check mb-0">
-              <input class="form-check-input" type="checkbox" id="remember">
-              <label class="form-check-label" for="remember">Keep me signed in</label>
-            </div>
-            <a href="#" class="small">Forgot password?</a>
-          </div>
-
-          <button type="submit" class="btn btn-signin w-100 d-flex justify-content-center align-items-center gap-2" id="submitBtn">
-            <span class="spinner-border spinner-border-sm d-none" id="spinner" aria-hidden="true"></span>
-            <span id="btnText">Sign in</span>
-            <svg class="arrow" id="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-        </form>
-
-        <div class="divider my-4">or continue with</div>
-
-        <div class="row g-2">
-          <div class="col-6">
-            <button class="btn btn-social w-100 d-flex justify-content-center align-items-center gap-2" type="button">
-              <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Google</button>
-          </div>
-          <div class="col-6">
-            <button class="btn btn-social w-100 d-flex justify-content-center align-items-center gap-2" type="button">
-              <svg width="20" height="20" viewBox="0 0 23 23" aria-hidden="true"><path fill="#F25022" d="M1 1h10v10H1z"/><path fill="#7FBA00" d="M12 1h10v10H12z"/><path fill="#00A4EF" d="M1 12h10v10H1z"/><path fill="#FFB900" d="M12 12h10v10H12z"/></svg>Microsoft</button>
-          </div>
-        </div>
-
-        <p class="text-center text-secondary mt-4 mb-3">New to Lumora? <a href="#signup" data-go="signup">Create an account</a></p>
-        </div>
-
-        <div id="registerView" class="d-none">
-        <h1 class="mb-2">Create your account</h1>
-        <p class="text-secondary mb-4">Free for 14 days. No credit card needed.</p>
-
-        <form id="registerForm" novalidate>
-          <div class="form-floating has-icon mb-3 position-relative">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c.9-3.6 3.8-5.5 7.5-5.5s6.6 1.9 7.5 5.5"/></svg></span>
-            <input type="text" class="form-control" id="regName" placeholder="Full name" autocomplete="name" required>
-            <label for="regName">Full name</label>
-            <div class="invalid-feedback">Enter your full name.</div>
-          </div>
-
-          <div class="form-floating has-icon mb-3 position-relative">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5 12 13l8.5-5.5"/></svg></span>
-            <input type="email" class="form-control" id="regEmail" placeholder="you@company.com" autocomplete="email" required>
-            <label for="regEmail">Work email</label>
-            <div class="invalid-feedback">Enter a valid email address.</div>
-          </div>
-
-          <div class="mb-3">
-            <div class="form-floating has-icon position-relative">
-              <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/></svg></span>
-              <input type="password" class="form-control" id="regPass" placeholder="Password" autocomplete="new-password" required>
-              <label for="regPass">Create password</label>
-              <button type="button" class="toggle-pass" data-target="regPass" aria-label="Show password">
-              <svg class="eye-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
-              <svg class="eye-off d-none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.3 6.4C3.7 8.1 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
-              </button>
-              <div class="invalid-feedback">Use at least 8 characters.</div>
-            </div>
-            <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <div class="meter-label" id="meterLabel">Use 8+ characters with a mix of letters, numbers and symbols.</div>
-          </div>
-
-          <div class="form-floating has-icon mb-3 position-relative">
-            <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/></svg></span>
-            <input type="password" class="form-control" id="regConfirm" placeholder="Confirm password" autocomplete="new-password" required>
-            <label for="regConfirm">Confirm password</label>
-            <button type="button" class="toggle-pass" data-target="regConfirm" aria-label="Show password">
-              <svg class="eye-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
-              <svg class="eye-off d-none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.3 6.4C3.7 8.1 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
-            </button>
-            <div class="invalid-feedback">Passwords don't match.</div>
-          </div>
-
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="terms" required>
-            <label class="form-check-label small" for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
-          </div>
-
-          <button type="submit" class="btn btn-signin w-100 d-flex justify-content-center align-items-center gap-2" id="regBtn">
-            <span class="spinner-border spinner-border-sm d-none" id="regSpinner" aria-hidden="true"></span>
-            <span id="regBtnText">Create account</span>
-            <svg class="arrow" id="regArrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-        </form>
-
-        <div id="regSuccess" class="alert-soft p-3 mt-3 d-none" role="status" style="background:#eafaf4;border-color:#bfead9;color:#0b6b57">
-          Account created. Check your inbox to verify your email.
-        </div>
-
-        <div class="divider my-4">or sign up with</div>
-        <div class="row g-2">
-          <div class="col-6"><button class="btn btn-social w-100 d-flex justify-content-center align-items-center gap-2" type="button"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Google</button></div>
-          <div class="col-6"><button class="btn btn-social w-100 d-flex justify-content-center align-items-center gap-2" type="button"><svg width="20" height="20" viewBox="0 0 23 23" aria-hidden="true"><path fill="#F25022" d="M1 1h10v10H1z"/><path fill="#7FBA00" d="M12 1h10v10H12z"/><path fill="#00A4EF" d="M1 12h10v10H1z"/><path fill="#FFB900" d="M12 12h10v10H12z"/></svg>Microsoft</button></div>
-        </div>
-
-        <p class="text-center text-secondary mt-4 mb-3">Already have an account? <a href="#signin" data-go="signin">Sign in</a></p>
-        </div>
-
-        <div class="text-center">
-          <span class="secure">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="M8.7 12.2l2.4 2.4 4.3-4.6"/></svg>
-            256-bit encrypted connection
-          </span>
-        </div>
+    <form id="loginForm" novalidate>
+      <div class="form-floating has-icon mb-3 position-relative">
+        <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5 12 13l8.5-5.5"/></svg></span>
+        <input type="email" class="form-control" id="email" placeholder="you@company.com" autocomplete="email" required>
+        <label for="email">Email address</label>
+        <div class="invalid-feedback">Enter a valid email address.</div>
       </div>
-    </section>
+
+      <div class="form-floating has-icon mb-3 position-relative">
+        <span class="field-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/></svg></span>
+        <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="current-password" minlength="8" required>
+        <label for="password">Password</label>
+        <button type="button" class="toggle-pass" id="togglePass" aria-label="Show password">
+          <svg id="eyeOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg id="eyeOff" class="d-none" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.3 6.4C3.7 8.1 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+        </button>
+        <div class="invalid-feedback">Password must be at least 8 characters.</div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check mb-0">
+          <input class="form-check-input" type="checkbox" id="remember">
+          <label class="form-check-label" for="remember">Keep me signed in</label>
+        </div>
+        <a href="#" class="small">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn btn-signin w-100 d-flex justify-content-center align-items-center gap-2" id="submitBtn">
+        <span class="spinner-border spinner-border-sm d-none" id="spinner" aria-hidden="true"></span>
+        <span id="btnText">Sign in</span>
+        <svg class="arrow" id="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+
+    <div class="divider my-4">or continue with</div>
+
+    <div class="row g-2">
+      <div class="col-6">
+        <button class="btn btn-social w-100 d-flex justify-content-center align-items-center gap-2" type="button">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Google</button>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-social w-100 d-flex justify-content-center align-items-center gap-2" type="button">
+          <svg width="20" height="20" viewBox="0 0 23 23" aria-hidden="true"><path fill="#F25022" d="M1 1h10v10H1z"/><path fill="#7FBA00" d="M12 1h10v10H12z"/><path fill="#00A4EF" d="M1 12h10v10H1z"/><path fill="#FFB900" d="M12 12h10v10H12z"/></svg>Microsoft</button>
+      </div>
+    </div>
+
+    <p class="text-center text-secondary mt-4 mb-3">New to Lumora? <a href="#">Create an account</a></p>
+    <div class="text-center">
+      <span class="secure">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="M8.7 12.2l2.4 2.4 4.3-4.6"/></svg>
+        256-bit encrypted connection
+      </span>
+    </div>
   </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const $ = (id) => document.getElementById(id);
-  const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const errorBox = document.getElementById('formError');
 
-  /* ---------- Switch between Sign in / Sign up ---------- */
-  const copy = {
-    signin: ['Run your work <em>faster</em>, together.', 'Projects, people and reports, all in one calm workspace.'],
-    signup: ['Start free. Get moving <em>today</em>.', 'Set up your workspace in under two minutes and invite your team.']
-  };
-  function show(mode) {
-    const up = mode === 'signup';
-    $('loginView').classList.toggle('d-none', up);
-    $('registerView').classList.toggle('d-none', !up);
-    const v = $(up ? 'registerView' : 'loginView');
-    v.classList.remove('view-in'); void v.offsetWidth; v.classList.add('view-in');
-    $('seg').classList.toggle('right', up);
-    $('tabIn').classList.toggle('active', !up);
-    $('tabUp').classList.toggle('active', up);
-    $('leftTitle').innerHTML = copy[mode][0];
-    $('leftText').textContent = copy[mode][1];
-    document.title = (up ? 'Create account' : 'Sign in') + ' | Lumora';
-    history.replaceState(null, '', up ? '#signup' : '#signin');
-  }
-  document.querySelectorAll('[data-go]').forEach(el => el.addEventListener('click', (e) => { e.preventDefault(); show(el.dataset.go); }));
-  show(location.hash === '#signup' ? 'signup' : 'signin');
+  // Show / hide password
+  document.getElementById('togglePass').addEventListener('click', (e) => {
+    const show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    document.getElementById('eyeOn').classList.toggle('d-none', show);
+    document.getElementById('eyeOff').classList.toggle('d-none', !show);
+    e.currentTarget.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  });
 
-  /* ---------- Show / hide password (all fields) ---------- */
-  document.querySelectorAll('.toggle-pass').forEach(btn => btn.addEventListener('click', () => {
-    const input = $(btn.dataset.target);
-    const reveal = input.type === 'password';
-    input.type = reveal ? 'text' : 'password';
-    btn.querySelector('.eye-on').classList.toggle('d-none', reveal);
-    btn.querySelector('.eye-off').classList.toggle('d-none', !reveal);
-    btn.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
-  }));
-
-  /* ---------- Loading helper ---------- */
-  function busy(btnId, spinId, arrowId, textId, on, label) {
-    $(btnId).disabled = on;
-    $(spinId).classList.toggle('d-none', !on);
-    $(arrowId).classList.toggle('d-none', on);
-    $(textId).textContent = label;
-  }
-
-  /* ---------- Sign in ---------- */
-  const email = $('email'), password = $('password'), errorBox = $('formError');
-  $('loginForm').addEventListener('submit', (e) => {
+  // Validate + submit
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
     errorBox.classList.add('d-none');
-    const emailOk = validEmail(email.value), passOk = password.value.length >= 8;
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    const passOk = password.value.length >= 8;
     email.classList.toggle('is-invalid', !emailOk);
     password.classList.toggle('is-invalid', !passOk);
     if (!emailOk || !passOk) return;
 
-    busy('submitBtn', 'spinner', 'arrow', 'btnText', true, 'Signing in…');
-    /* ----- Replace with your real login request -----
-       fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ email: email.value, password: password.value }) })
-         .then(r => r.ok ? location.href = '/dashboard' : Promise.reject());
-    ------------------------------------------------- */
-    setTimeout(() => { busy('submitBtn', 'spinner', 'arrow', 'btnText', false, 'Sign in'); errorBox.classList.remove('d-none'); }, 1400); // demo only
-  });
-  [email, password].forEach(el => el.addEventListener('input', () => el.classList.remove('is-invalid')));
-
-  /* ---------- Password strength ---------- */
-  const regPass = $('regPass');
-  regPass.addEventListener('input', () => {
-    const v = regPass.value;
-    let score = 0;
-    if (v.length >= 8) score++;
-    if (/[a-z]/.test(v) && /[A-Z]/.test(v)) score++;
-    if (/\d/.test(v)) score++;
-    if (/[^A-Za-z0-9]/.test(v) || v.length >= 14) score++;
-    if (!v) score = 0;
-    $('meter').className = 'meter' + (score ? ' s' + score : '');
-    $('meterLabel').textContent = v ? ['Too weak', 'Weak', 'Fair', 'Good', 'Strong'][score] : 'Use 8+ characters with a mix of letters, numbers and symbols.';
-    regPass.classList.remove('is-invalid');
-  });
-
-  /* ---------- Sign up ---------- */
-  $('registerForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    $('regSuccess').classList.add('d-none');
-    const name = $('regName'), em = $('regEmail'), pw = $('regPass'), cf = $('regConfirm'), terms = $('terms');
-    const ok = {
-      name: name.value.trim().length >= 2,
-      email: validEmail(em.value),
-      pw: pw.value.length >= 8,
-      cf: cf.value === pw.value && cf.value.length > 0,
-      terms: terms.checked
+    const btn = document.getElementById('submitBtn');
+    const setBusy = (on) => {
+      btn.disabled = on;
+      document.getElementById('spinner').classList.toggle('d-none', !on);
+      document.getElementById('arrow').classList.toggle('d-none', on);
+      document.getElementById('btnText').textContent = on ? 'Signing in…' : 'Sign in';
     };
-    name.classList.toggle('is-invalid', !ok.name);
-    em.classList.toggle('is-invalid', !ok.email);
-    pw.classList.toggle('is-invalid', !ok.pw);
-    cf.classList.toggle('is-invalid', !ok.cf);
-    terms.classList.toggle('is-invalid', !ok.terms);
-    if (!Object.values(ok).every(Boolean)) return;
+    setBusy(true);
 
-    busy('regBtn', 'regSpinner', 'regArrow', 'regBtnText', true, 'Creating account…');
-    /* ----- Replace with your real registration request -----
-       fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ name: name.value, email: em.value, password: pw.value }) })
-         .then(r => r.ok ? location.href = '/welcome' : Promise.reject());
-    --------------------------------------------------------- */
-    setTimeout(() => { busy('regBtn', 'regSpinner', 'regArrow', 'regBtnText', false, 'Create account'); $('regSuccess').classList.remove('d-none'); }, 1400); // demo only
+    /* ----- Replace this block with your real login request -----
+       fetch('/api/login', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ email: email.value, password: password.value })
+       }).then(r => r.ok ? location.href = '/dashboard' : Promise.reject());
+    ------------------------------------------------------------- */
+    setTimeout(() => { setBusy(false); errorBox.classList.remove('d-none'); }, 1400); // demo only
   });
-  ['regName', 'regEmail', 'regConfirm', 'terms'].forEach(id => $(id).addEventListener('input', () => $(id).classList.remove('is-invalid')));
-  $('terms').addEventListener('change', () => $('terms').classList.remove('is-invalid'));
+
+  [email, password].forEach(el => el.addEventListener('input', () => el.classList.remove('is-invalid')));
 </script>
 </body>
 </html>
